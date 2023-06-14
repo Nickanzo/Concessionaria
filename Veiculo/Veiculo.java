@@ -7,6 +7,11 @@ public abstract class Veiculo {
             marca;
     int ano,
         lugares;
+    private double preco;
+
+    public double getPreco() {
+        return preco;
+    }
 
     public String getPlaca() {
         return placa;
