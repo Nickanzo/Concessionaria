@@ -6,5 +6,6 @@ public interface MotoFactory {
     public Moto montaMoto(String placa,
                           String modelo,
                           String marca,
-                          int ano);
+                          int ano,
+                          double preco);
 }

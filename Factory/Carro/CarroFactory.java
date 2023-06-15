@@ -6,5 +6,6 @@ public interface CarroFactory {
     public Carro montaCarro(String placa,
                             String modelo,
                             String marca,
-                            int ano);
+                            int ano,
+                            double preco);
 }
