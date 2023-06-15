@@ -8,7 +8,16 @@ public abstract class Veiculo {
     protected int ano,
               lugares;
     protected double preco;
-
+    public Veiculo(){
+    }
+    public Veiculo(String placa, String modelo, String marca, int ano, int lugares, double preco) {
+        this.placa = placa;
+        this.modelo = modelo;
+        this.marca = marca;
+        this.ano = ano;
+        this.lugares = lugares;
+        this.preco = preco;
+    }
     public double getPreco() {
         return preco;
     }
@@ -33,12 +42,5 @@ public abstract class Veiculo {
         return lugares;
     }
 
-    public Veiculo(String placa, String modelo, String marca, int ano, int lugares, double preco) {
-        this.placa = placa;
-        this.modelo = modelo;
-        this.marca = marca;
-        this.ano = ano;
-        this.lugares = lugares;
-        this.preco = preco;
-    }
+
 }
