@@ -2,12 +2,12 @@ package Veiculo;
 
 public abstract class Veiculo {
 
-    String  placa,
+    protected String  placa,
             modelo,
             marca;
-    int ano,
-        lugares;
-    private double preco;
+    protected int ano,
+              lugares;
+    protected double preco;
 
     public double getPreco() {
         return preco;
@@ -33,11 +33,12 @@ public abstract class Veiculo {
         return lugares;
     }
 
-    public Veiculo(String placa, String modelo, String marca, int ano, int lugares) {
+    public Veiculo(String placa, String modelo, String marca, int ano, int lugares, double preco) {
         this.placa = placa;
         this.modelo = modelo;
         this.marca = marca;
         this.ano = ano;
         this.lugares = lugares;
+        this.preco = preco;
     }
 }
