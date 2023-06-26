@@ -5,7 +5,9 @@ import Factory.Carro.*;
 import Factory.Moto.*;
 import Veiculo.Carro;
 import Veiculo.Moto;
+import Veiculo.Veiculo;
 import Venda.Cliente;
+import Venda.Venda;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -14,24 +16,18 @@ public class Concessionaria {
 
     static ArrayList<Cliente> listaClientes = new ArrayList<>();
     static Garagem garagem = new Garagem();
+    static Scanner s;
     public static void main(String[] args) {
 
-        System.out.println("Bem-vindo à Concessionaria.Concessionaria");
+        System.out.println("Bem-vindo à Concessionaria !");
 
-        Scanner s = new Scanner(System.in);
-
-        System.out.println("O que deseja fazer?");
-        System.out.println("----------------------");
-        System.out.println("1 - Comprar Carro");
-        System.out.println("2 - Comprar Moto");
-        //System.out.println("2 - Comprar Veiculos");
-        System.out.println("3 - Encomendar Pecas");
-        System.out.println("4 - Ver Carros Disponíveis");
-        System.out.println("5 - Ver Motos Disponíveis");
-        System.out.println("6 - Sair");
+        s = new Scanner(System.in);
 
         carregaClientes();
         carregaGaragem();
+
+        menuPrincipal();
+
 
         Carro c1 = garagem.buscaCarro("PQR1234");
         Moto m1 = garagem.buscaMoto("TUV1234");
@@ -97,6 +93,165 @@ public class Concessionaria {
 
     }
 
+    private static void menuPrincipal() {
+        System.out.println("""
+                O que deseja fazer?
+                ----------------------
+                1 - Comprar
+                2 - Ver Veiculos Disponiveis
+                3 - Sair
+                """);
+        String answer = s.nextLine();
+        if (answer.equals("1")){
+            menuCliente();
+        } else if (answer.equals("2")) {
+            menuGaragem();
+        } else if (answer.equals("3")) {
+            System.out.println("Obrigado, volte sempre !");
+        }else {
+            System.err.println("Escolha uma das opcoes do menu !");
+            menuPrincipal();
+        }
+    }
+
+    private static void menuGaragem() {
+        System.out.println("""
+                Quais veiculos deseja visualizar?
+                1 - Carros
+                2 - Motos
+                3 - Todos
+                4 - Voltar
+                """);
+        String answer = s.nextLine();
+        if (answer.equals("1")){
+            if (garagem!=null){
+                garagem.printaCarros();
+            }else {
+                System.err.println("Garagem indisponivel para consulta !");
+            }
+        } else if (answer.equals("2")) {
+            if (garagem!=null){
+                garagem.printaMotos();
+            }else {
+                System.err.println("Garagem indisponivel para consulta !");
+            }
+        } else if (answer.equals("3")) {
+            if (garagem!=null){
+                garagem.printaCarros();
+                garagem.printaMotos();
+            }else {
+                System.err.println("Garagem indisponivel para consulta !");
+            }
+        }else if(answer.equals("4")){
+            menuPrincipal();
+        }else {
+            System.err.println("Escolha uma das opcoes do menu !");
+            menuGaragem();
+        }
+    }
+
+    private static void menuCliente() {
+        System.out.println("""
+                Cliente ja possui cadastro?
+                1 - Sim
+                2 - Nao
+                """);
+        String answer = s.nextLine();
+        if (answer.equals("1")){
+            System.out.println("Digite o nome completo do Cliente");
+            answer = s.nextLine();
+            Cliente c = buscaCliente(answer);
+            if (c!=null){
+                menuCompra(c);
+            }
+        }else if (answer.equals("2")){
+            menuCadastro();
+        }else {
+            System.err.println("Escolha uma das opcoes do menu !");
+        }
+    }
+
+    private static void menuCadastro() {
+
+        String  nome,
+                endereco,
+                telefone,
+                email;
+
+        System.out.println("Digite o nome completo do cliente");
+        nome = s.nextLine();
+
+        System.out.println("Digite o endereco do cliente");
+        endereco = s.nextLine();
+
+        System.out.println("Digite o telefone do cliente");
+        telefone = s.nextLine();
+
+        System.out.println("Digite o email do cliente");
+        email = s.nextLine();
+
+        cadastraCliente(nome, endereco, telefone, email);
+        System.out.println("Cliente cadastrado com sucesso !");
+        menuCompra(new Cliente(nome, endereco, telefone, email));
+    }
+
+    private static void menuCompra(Cliente c) {
+        System.out.println("""
+                        Qual veiculo gostaria de comprar?
+                        1 - Carro
+                        2 - Moto
+                        3 - Voltar para Menu Principal
+                        """);
+        String answer = s.nextLine();
+        if (answer.equals("1")){
+            garagem.printaCarros();
+            System.out.println("Digite a placa do carro que deseja comprar");
+            answer = s.nextLine();
+            Veiculo v = garagem.buscaCarro(answer);
+            if (v!=null){
+                menuVenda(c,v);
+            }else {
+                System.err.println("Placa nao encontrada !");
+                menuCompra(c);
+            }
+        }else if (answer.equals("2")){
+            garagem.printaMotos();
+            System.out.println("Digite a placa da moto que deseja comprar");
+            answer = s.nextLine();
+            Veiculo v = garagem.buscaMoto(answer);
+            if (v!=null){
+                menuVenda(c,v);
+            }else {
+                System.err.println("Placa nao encontrada !");
+                menuCompra(c);
+            }
+        }else if (answer.equals("3")){
+            menuPrincipal();
+        }else {
+            System.out.println("");
+        }
+    }
+
+    private static void menuVenda(Cliente c, Veiculo v) {
+        System.out.println("""
+                Deseja que o veiculo seja Segurado?
+                1 - Sim
+                2 - Nao
+                3 - Voltar para Menu Principal 
+                """);
+        String answer = s.nextLine();
+        if (answer.equals("1")){
+            VeiculoComSeguroDecorator vSeguro = new VeiculoComSeguroDecorator(v);
+            Venda vendaSeguro = new Venda(c,vSeguro);
+        }else if (answer.equals("2")){
+            Venda vendaSemSeguro = new Venda(c,v);
+        }else if (answer.equals("3")){
+            menuPrincipal();
+        }else {
+            System.out.println("Escolha uma das opcoes do menu");
+        }
+    }
+
     private static void carregaGaragem() {
         carregaCarros();
         carregaMotos();
@@ -143,7 +298,7 @@ public class Concessionaria {
     }
 
     public static void carregaClientes(){
-        Cliente cliente1 = new Cliente("João Silva", "Rua das Flores, 123", "(11) 1234-5678", "joao.silva@example.com");
+        Cliente cliente1 = new Cliente("Joao Silva", "Rua das Flores, 123", "(11) 1234-5678", "joao.silva@example.com");
         listaClientes.add(cliente1);
         Cliente cliente2 = new Cliente("Maria Santos", "Avenida Principal, 456", "(22) 9876-5432", "maria.santos@example.com");
         listaClientes.add(cliente2);
