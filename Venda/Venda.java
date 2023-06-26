@@ -1,16 +1,17 @@
+package Venda;
+
+import State.VendaState;
 import Veiculo.Veiculo;
 
-import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDate;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class Venda {
     private static int numVenda = 0;
     private Date data;
     private Cliente cliente;
     private ArrayList<Veiculo> veiculos;
+    private VendaState estado;
 
 
     public Venda(Cliente cliente, ArrayList<Veiculo> veiculos) {
@@ -21,7 +22,7 @@ public class Venda {
 
     }
 
-    public LocalDate getData() {
+    public Date getData() {
         return data;
     }
 
@@ -36,7 +37,7 @@ public class Venda {
     public double calcularValorTotal() {
         double valorTotal = 0.0;
         for (Veiculo veiculo : veiculos) {
-            valorTotal += veiculo.getPreco();
+            valorTotal += veiculo.calcularPrecoTotal();
         }
         return valorTotal;
     }
@@ -50,7 +51,7 @@ public class Venda {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Data: ").append(data).append("\n");
-        sb.append("Cliente: ").append(cliente.getNome()).append("\n");
+        sb.append("Venda.Cliente: ").append(cliente.getNome()).append("\n");
         sb.append("Carros:\n");
         for (Veiculo veiculo : veiculos) {
             sb.append(veiculo.getModelo()).append(" - ").append(veiculo.getPlaca()).append("\n");

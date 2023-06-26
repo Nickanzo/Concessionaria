@@ -1,3 +1,5 @@
+package Venda;
+
 public class Cliente {
     private String nome;
     private String endereco;
@@ -29,7 +31,7 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return "Cliente{" +
+        return "Venda.Cliente{" +
                 "nome='" + nome + '\'' +
                 ", endereco='" + endereco + '\'' +
                 ", telefone='" + telefone + '\'' +
