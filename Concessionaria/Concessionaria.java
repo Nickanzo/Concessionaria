@@ -3,8 +3,9 @@ package Concessionaria;
 import Decorator.VeiculoComSeguroDecorator;
 import Factory.Carro.*;
 import Factory.Moto.*;
-import Veiculo.Carro;
-import Veiculo.Moto;
+import State.ProcessandoPagamentoState;
+import State.VendaCanceladaState;
+import State.VendaFinalizadaState;
 import Veiculo.Veiculo;
 import Venda.Cliente;
 import Venda.Venda;
@@ -17,6 +18,7 @@ public class Concessionaria {
     static ArrayList<Cliente> listaClientes = new ArrayList<>();
     static Garagem garagem = new Garagem();
     static Scanner s;
+
     public static void main(String[] args) {
 
         System.out.println("Bem-vindo à Concessionaria !");
@@ -29,72 +31,25 @@ public class Concessionaria {
         menuPrincipal();
 
 
-        Carro c1 = garagem.buscaCarro("PQR1234");
-        Moto m1 = garagem.buscaMoto("TUV1234");
-
-        VeiculoComSeguroDecorator v1 = new VeiculoComSeguroDecorator(c1);
-        VeiculoComSeguroDecorator v2 = new VeiculoComSeguroDecorator(m1);
-
-        System.out.println("Preco carro: " + c1.calcularPrecoTotal());
-        System.out.println("Preco Seguro: " + v1.calcularPrecoTotal());
-        System.out.println("Preco Seguro: " + v1.getPrecoBase());
-
-        System.out.println("Preco carro: " + m1.calcularPrecoTotal());
-        System.out.println("Preco Seguro: " + v2.calcularPrecoTotal());
-        System.out.println("Preco Seguro: " + v2.getPrecoBase());
-
-
-        switch (s.nextLine()) {
-            case "1":
-                System.out.println("Venda.Cliente possui cadastro? S/N");
-                if (s.nextLine().equals("S")){
-                    System.out.println("Digite o email do Venda.Cliente");
-                    Cliente c = buscaCliente(s.nextLine());
-                    if (c != null){
-
-
-                    }
-                }else{
-                    System.out.println("Nome do Venda.Cliente:");
-                    String nome = s.nextLine();
-                    System.out.println("Endereco do Venda.Cliente");
-                    String endereco = s.nextLine();
-                    System.out.println("Telefone do Venda.Cliente");
-                    String telefone = s.nextLine();
-                    System.out.println("Email do Venda.Cliente");
-                    String email = s.nextLine();
-                    cadastraCliente(nome, endereco, telefone, email);
-                }
-                break;
-            case "2":
-                break;
-            case "3":
-                break;
-            case "4":
-                if (garagem != null){
-                    garagem.printaCarros();
-                }
-                break;
-            case "5":
-                if (garagem != null){
-                    garagem.printaMotos();
-                }
-                break;
-            case "6":
-                System.out.println("Volte sempre !");
-                break;
-            default:
-                System.err.println("Escolha um numero do menu !");
-        }
-
-//        Concessionaria.Garagem g = new Concessionaria.Garagem();
-
-        s.next();
+//        Carro c1 = garagem.buscaCarro("PQR1234");
+//        Moto m1 = garagem.buscaMoto("TUV1234");
+//
+//        VeiculoComSeguroDecorator v1 = new VeiculoComSeguroDecorator(c1);
+//        VeiculoComSeguroDecorator v2 = new VeiculoComSeguroDecorator(m1);
+//
+//        System.out.println("Preco carro: " + c1.calcularPrecoTotal());
+//        System.out.println("Preco Seguro: " + v1.calcularPrecoTotal());
+//        System.out.println("Preco Seguro: " + v1.getPrecoBase());
+//
+//        System.out.println("Preco carro: " + m1.calcularPrecoTotal());
+//        System.out.println("Preco Seguro: " + v2.calcularPrecoTotal());
+//        System.out.println("Preco Seguro: " + v2.getPrecoBase());
 
     }
 
     private static void menuPrincipal() {
         System.out.println("""
+                ----------------------
                 O que deseja fazer?
                 ----------------------
                 1 - Comprar
@@ -116,7 +71,9 @@ public class Concessionaria {
 
     private static void menuGaragem() {
         System.out.println("""
+                ----------------------
                 Quais veiculos deseja visualizar?
+                ----------------------
                 1 - Carros
                 2 - Motos
                 3 - Todos
@@ -143,16 +100,19 @@ public class Concessionaria {
                 System.err.println("Garagem indisponivel para consulta !");
             }
         }else if(answer.equals("4")){
-            menuPrincipal();
+
         }else {
             System.err.println("Escolha uma das opcoes do menu !");
             menuGaragem();
         }
+        menuPrincipal();
     }
 
     private static void menuCliente() {
         System.out.println("""
+                ----------------------
                 Cliente ja possui cadastro?
+                ----------------------
                 1 - Sim
                 2 - Nao
                 """);
@@ -160,9 +120,14 @@ public class Concessionaria {
         if (answer.equals("1")){
             System.out.println("Digite o nome completo do Cliente");
             answer = s.nextLine();
-            Cliente c = buscaCliente(answer);
-            if (c!=null){
-                menuCompra(c);
+            if (answer.contains("ã")){
+                System.err.println("Favor nao usar caracteres especiais !");
+                menuCliente();
+            }else{
+                Cliente c = buscaCliente(answer);
+                if (c!=null){
+                    menuCompra(c);
+                }
             }
         }else if (answer.equals("2")){
             menuCadastro();
@@ -197,7 +162,9 @@ public class Concessionaria {
 
     private static void menuCompra(Cliente c) {
         System.out.println("""
+                        ----------------------
                         Qual veiculo gostaria de comprar?
+                        ----------------------
                         1 - Carro
                         2 - Moto
                         3 - Voltar para Menu Principal
@@ -209,7 +176,8 @@ public class Concessionaria {
             answer = s.nextLine();
             Veiculo v = garagem.buscaCarro(answer);
             if (v!=null){
-                menuVenda(c,v);
+                garagem.retiraCarro(v.getPlaca());
+                menuVenda(c,v,"Carro");
             }else {
                 System.err.println("Placa nao encontrada !");
                 menuCompra(c);
@@ -220,7 +188,8 @@ public class Concessionaria {
             answer = s.nextLine();
             Veiculo v = garagem.buscaMoto(answer);
             if (v!=null){
-                menuVenda(c,v);
+                garagem.retiraMoto(v.getPlaca());
+                menuVenda(c,v,"Moto");
             }else {
                 System.err.println("Placa nao encontrada !");
                 menuCompra(c);
@@ -232,9 +201,11 @@ public class Concessionaria {
         }
     }
 
-    private static void menuVenda(Cliente c, Veiculo v) {
+    private static void menuVenda(Cliente c, Veiculo v, String tipo) {
         System.out.println("""
+                ----------------------
                 Deseja que o veiculo seja Segurado?
+                ----------------------
                 1 - Sim
                 2 - Nao
                 3 - Voltar para Menu Principal 
@@ -243,13 +214,52 @@ public class Concessionaria {
         if (answer.equals("1")){
             VeiculoComSeguroDecorator vSeguro = new VeiculoComSeguroDecorator(v);
             Venda vendaSeguro = new Venda(c,vSeguro);
+            menuPagamento(vendaSeguro,tipo);
         }else if (answer.equals("2")){
             Venda vendaSemSeguro = new Venda(c,v);
+            menuPagamento(vendaSemSeguro,tipo);
         }else if (answer.equals("3")){
             menuPrincipal();
         }else {
             System.out.println("Escolha uma das opcoes do menu");
         }
+    }
+
+    private static void menuPagamento(Venda venda, String tipo) {
+        System.out.printf("""
+                Valor total: " + %s                 
+                ----------------------
+                Confirma pagamento ?
+                ----------------------
+                1 - Ok
+                2 - Cancelar 
+                """, venda.calcularValorTotal());
+        String answer = s.nextLine();
+        if (answer.equals("1")){
+            if (tipo.equalsIgnoreCase("Carro")){
+                garagem.retiraCarro(venda.getVeiculo().getPlaca());
+            } else if (tipo.equalsIgnoreCase("Moto")) {
+                garagem.retiraMoto(venda.getVeiculo().getPlaca());
+            }
+            venda.setEstado(new ProcessandoPagamentoState(venda));
+            imprimeVenda(venda, tipo);
+        }else if (answer.equals("2")){
+            venda.setEstado(new VendaCanceladaState(venda));
+            System.err.println("Venda cancelada !");
+        }else {
+            System.out.println("Escolha uma das opcoes do menu");
+            menuPagamento(venda, tipo);
+        }
+
+
+    }
+
+    private static void imprimeVenda(Venda venda, String tipo) {
+        System.out.printf("""
+                Venda de %s
+                %s                
+                """,tipo,venda.toString());
+        venda.setEstado(new VendaFinalizadaState(venda));
     }
 
     private static void carregaGaragem() {
@@ -333,10 +343,10 @@ public class Concessionaria {
         System.out.println("Venda.Cliente cadastrado !");
     }
 
-    public static Cliente buscaCliente(String email){
+    public static Cliente buscaCliente(String nome){
         //Realizada busca pelo email para facilitar
         for ( Cliente c : listaClientes){
-            if (c.getEmail().equals(email)){
+            if (c.getNome().equalsIgnoreCase(nome)){
                 return c;
             }
         }

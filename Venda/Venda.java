@@ -1,5 +1,6 @@
 package Venda;
 
+import State.EsperandoPagamentoState;
 import State.VendaState;
 import Veiculo.Veiculo;
 
@@ -11,11 +12,13 @@ public class Venda {
     private Cliente cliente;
     private Veiculo veiculo;
     private VendaState estado;
-    public Venda(Cliente cliente, Veiculo veiculos) {
+    public Venda(Cliente cliente, Veiculo veiculo) {
         ++numVenda;
         this.data = new Date();
         this.cliente = cliente;
-        this.veiculo = veiculos;
+        this.veiculo = veiculo;
+        this.estado = new EsperandoPagamentoState(this);
+        System.out.println("Aguardando Pagamento...");
     }
     public VendaState getEstado() {
         return estado;
@@ -43,8 +46,8 @@ public class Venda {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Data: ").append(data).append("\n");
-        sb.append("Venda.Cliente: ").append(cliente.getNome()).append("\n");
-        sb.append("Carros:\n");
+        sb.append("Cliente: ").append(cliente.getNome()).append("\n");
+        sb.append("Veiculo:\n");
         sb.append(veiculo.getModelo()).append(" - ").append(veiculo.getPlaca()).append("\n");
         sb.append("Valor Total: ").append(calcularValorTotal()).append("\n");
         return sb.toString();

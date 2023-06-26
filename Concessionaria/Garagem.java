@@ -53,18 +53,22 @@ public class Garagem {
 
     public void printaCarros() {
         if (!listaCarros.isEmpty()){
+            System.out.println("--- CARROS ---");
             for (Carro c : listaCarros) {
                 System.out.println(c.toString());
             }
+            System.out.println("--- FIM DE CARROS ---");
         }else{
             System.err.println("Nao ha carros disponiveis !");
         }
     }
     public void printaMotos(){
         if (!listaCarros.isEmpty()){
+            System.out.println("--- MOTOS ---");
             for (Moto m : listaMotos){
                 System.out.println(m.toString());
             }
+            System.out.println("--- FIM DE MOTOS ---");
         }else {
             System.err.println("Nao ha motos disponiveis !");
         }
