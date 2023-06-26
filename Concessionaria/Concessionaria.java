@@ -1,9 +1,11 @@
-import Factory.Carro.CarroEsportivoFactory;
-import Factory.Carro.CarroPicapeFactory;
-import Factory.Carro.CarroSedanFactory;
-import Factory.Moto.MotoEsportivaFactory;
-import Factory.Moto.MotoScooterFactory;
-import Factory.Moto.MotoStreetFactory;
+package Concessionaria;
+
+import Decorator.VeiculoComSeguroDecorator;
+import Factory.Carro.*;
+import Factory.Moto.*;
+import Veiculo.Carro;
+import Veiculo.Moto;
+import Venda.Cliente;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -14,8 +16,7 @@ public class Concessionaria {
     static Garagem garagem = new Garagem();
     public static void main(String[] args) {
 
-        System.out.println("Bem-vindo à Concessionaria");
-
+        System.out.println("Bem-vindo à Concessionaria.Concessionaria");
 
         Scanner s = new Scanner(System.in);
 
@@ -32,24 +33,39 @@ public class Concessionaria {
         carregaClientes();
         carregaGaragem();
 
+        Carro c1 = garagem.buscaCarro("PQR1234");
+        Moto m1 = garagem.buscaMoto("TUV1234");
+
+        VeiculoComSeguroDecorator v1 = new VeiculoComSeguroDecorator(c1);
+        VeiculoComSeguroDecorator v2 = new VeiculoComSeguroDecorator(m1);
+
+        System.out.println("Preco carro: " + c1.calcularPrecoTotal());
+        System.out.println("Preco Seguro: " + v1.calcularPrecoTotal());
+        System.out.println("Preco Seguro: " + v1.getPrecoBase());
+
+        System.out.println("Preco carro: " + m1.calcularPrecoTotal());
+        System.out.println("Preco Seguro: " + v2.calcularPrecoTotal());
+        System.out.println("Preco Seguro: " + v2.getPrecoBase());
+
+
         switch (s.nextLine()) {
             case "1":
-                System.out.println("Cliente possui cadastro? S/N");
+                System.out.println("Venda.Cliente possui cadastro? S/N");
                 if (s.nextLine().equals("S")){
-                    System.out.println("Digite o email do Cliente");
+                    System.out.println("Digite o email do Venda.Cliente");
                     Cliente c = buscaCliente(s.nextLine());
                     if (c != null){
 
 
                     }
                 }else{
-                    System.out.println("Nome do Cliente:");
+                    System.out.println("Nome do Venda.Cliente:");
                     String nome = s.nextLine();
-                    System.out.println("Endereco do Cliente");
+                    System.out.println("Endereco do Venda.Cliente");
                     String endereco = s.nextLine();
-                    System.out.println("Telefone do Cliente");
+                    System.out.println("Telefone do Venda.Cliente");
                     String telefone = s.nextLine();
-                    System.out.println("Email do Cliente");
+                    System.out.println("Email do Venda.Cliente");
                     String email = s.nextLine();
                     cadastraCliente(nome, endereco, telefone, email);
                 }
@@ -75,7 +91,7 @@ public class Concessionaria {
                 System.err.println("Escolha um numero do menu !");
         }
 
-//        Garagem g = new Garagem();
+//        Concessionaria.Garagem g = new Concessionaria.Garagem();
 
         s.next();
 
@@ -159,7 +175,7 @@ public class Concessionaria {
 
     public static void cadastraCliente(String nome, String endereco, String telefone, String email){
         listaClientes.add(new Cliente(nome, endereco, telefone, email));
-        System.out.println("Cliente cadastrado !");
+        System.out.println("Venda.Cliente cadastrado !");
     }
 
     public static Cliente buscaCliente(String email){
