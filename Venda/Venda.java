@@ -13,6 +13,13 @@ public class Venda {
     private ArrayList<Veiculo> veiculos;
     private VendaState estado;
 
+    public VendaState getEstado() {
+        return estado;
+    }
+
+    public void setEstado(VendaState estado) {
+        this.estado = estado;
+    }
 
     public Venda(Cliente cliente, ArrayList<Veiculo> veiculos) {
         ++numVenda;
