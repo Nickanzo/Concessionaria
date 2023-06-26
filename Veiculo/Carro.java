@@ -1,18 +1,28 @@
 package Veiculo;
 
-public class Carro extends Veiculo{
+public class Carro extends Veiculo {
 
-    public enum Tipos {Sedan, Esportivo, Picape}
-    private Tipos tipo;
+    public enum Tipo {
+        Sedan, Esportivo, Picape
+    }
+
+    private Tipo tipo;
     private boolean CaixaAberta;
 
-    public Carro(String placa, String modelo, String marca, int ano, int lugares, Tipos tipo, boolean caixaAberta, double preco) {
-        super(placa, modelo, marca, ano, lugares, preco);
+    public Carro(String placa, String modelo, String marca, int ano, int lugares, Tipo tipo, boolean caixaAberta,
+            double precoBase) {
+        super(placa, modelo, marca, ano, lugares, precoBase);
         this.tipo = tipo;
         CaixaAberta = caixaAberta;
     }
 
-    public Tipos getTipo() {
+    @Override
+    public double calcularPrecoTotal() {
+        double porcentagemImposto = 0.20;
+        return precoBase * (1 + porcentagemImposto);
+    }
+
+    public Tipo getTipo() {
         return tipo;
     }
 
@@ -26,7 +36,7 @@ public class Carro extends Veiculo{
                 ", Modelo='" + modelo + '\'' +
                 ", Marca='" + marca + '\'' +
                 ", Ano=" + ano +
-                ", Preco=" + preco +
+                ", Preço Total=" + calcularPrecoTotal() +
                 ", Lugares=" + lugares +
                 ", Tipo=" + tipo +
                 '}';
