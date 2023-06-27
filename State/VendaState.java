@@ -6,7 +6,7 @@ public abstract class VendaState {
     public VendaState(Venda venda) {
         this.venda = venda;
     }
-    abstract void processaPagamento();
-    abstract void cancelaVenda();
-    abstract void finalizaVenda();
+    public abstract void processaPagamento();
+    public abstract void cancelaVenda();
+    public abstract void finalizaVenda();
 }

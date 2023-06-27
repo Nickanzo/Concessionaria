@@ -42,6 +42,15 @@ public class Venda {
     public Veiculo getVeiculo() {
         return veiculo;
     }
+    public void processaPagamento(){
+        estado.processaPagamento();
+    }
+    public void cancelaVenda(){
+        estado.cancelaVenda();
+    }
+    public void finalizaVenda(){
+        estado.finalizaVenda();
+    }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

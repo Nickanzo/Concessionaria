@@ -227,7 +227,7 @@ public class Concessionaria {
 
     private static void menuPagamento(Venda venda, String tipo) {
         System.out.printf("""
-                Valor total: " + %s                 
+                Valor total: %s                 
                 ----------------------
                 Confirma pagamento ?
                 ----------------------
@@ -241,10 +241,10 @@ public class Concessionaria {
             } else if (tipo.equalsIgnoreCase("Moto")) {
                 garagem.retiraMoto(venda.getVeiculo().getPlaca());
             }
-            venda.setEstado(new ProcessandoPagamentoState(venda));
+            venda.processaPagamento();
             imprimeVenda(venda, tipo);
         }else if (answer.equals("2")){
-            venda.setEstado(new VendaCanceladaState(venda));
+            venda.cancelaVenda();
             System.err.println("Venda cancelada !");
         }else {
             System.out.println("Escolha uma das opcoes do menu");
@@ -258,7 +258,7 @@ public class Concessionaria {
                 Venda de %s
                 %s                
                 """,tipo,venda.toString());
-        venda.setEstado(new VendaFinalizadaState(venda));
+        venda.finalizaVenda();
     }
 
     private static void carregaGaragem() {
@@ -281,7 +281,6 @@ public class Concessionaria {
         garagem.recebeMoto(mStreetFactory.montaMoto("TUV1234", "Street Triple", "Triumph", 2021, 17000.0));
         garagem.recebeMoto(mScooterFactory.montaMoto("WXY5678", "CB 500X", "Honda", 2014, 10000.0));
         garagem.recebeMoto(mEsportivaFactory.montaMoto("ZAB9012", "V-Strom 650", "Suzuki", 2013, 8000.0));
-        //System.out.println("Motos carregadas !");
 
     }
 
@@ -300,10 +299,6 @@ public class Concessionaria {
         garagem.recebeCarro(cSedanFactory.montaCarro("STU5678", "Uno", "Fiat", 2015, 20000.0));
         garagem.recebeCarro(cPicapeFactory.montaCarro("VWX9012", "C3", "Citroën", 2014, 18000.0));
         garagem.recebeCarro(cEsportivoFactory.montaCarro("YZA3456", "Up", "Volkswagen", 2018, 32000.0));
-        //System.out.println("Carros carregados !");
-
-
-        //garagem.recebeCarro(cEsportivoFactory.montaCarro("BCD7890", "Sandero", "Renault", 2019, 28000.0));
     }
 
     public static void carregaClientes(){
@@ -339,11 +334,9 @@ public class Concessionaria {
 
     public static void cadastraCliente(String nome, String endereco, String telefone, String email){
         listaClientes.add(new Cliente(nome, endereco, telefone, email));
-        System.out.println("Venda.Cliente cadastrado !");
+        System.out.println("Cliente cadastrado !");
     }
-
     public static Cliente buscaCliente(String nome){
-        //Realizada busca pelo email para facilitar
         for ( Cliente c : listaClientes){
             if (c.getNome().equalsIgnoreCase(nome)){
                 return c;

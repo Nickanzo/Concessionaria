@@ -52,23 +52,33 @@ public class Garagem {
     }
 
     public void printaCarros() {
+        int count = 0;
         if (!listaCarros.isEmpty()){
             System.out.println("--- CARROS ---");
             for (Carro c : listaCarros) {
                 System.out.println(c.toString());
+                count++;
             }
-            System.out.println("--- FIM DE CARROS ---");
+            System.out.printf("""
+                    Quantidade de Carros na Garagem : %s
+                    --- FIM DE CARROS ---
+                    """, count);
         }else{
             System.err.println("Nao ha carros disponiveis !");
         }
     }
     public void printaMotos(){
+        int count = 0;
         if (!listaCarros.isEmpty()){
             System.out.println("--- MOTOS ---");
             for (Moto m : listaMotos){
                 System.out.println(m.toString());
+                count++;
             }
-            System.out.println("--- FIM DE MOTOS ---");
+            System.out.printf("""
+                    Quantidade de Carros na Garagem : %s
+                    --- FIM DE MOTOS ---
+                    """, count);
         }else {
             System.err.println("Nao ha motos disponiveis !");
         }
