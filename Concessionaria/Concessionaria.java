@@ -250,8 +250,7 @@ public class Concessionaria {
             System.out.println("Escolha uma das opcoes do menu");
             menuPagamento(venda, tipo);
         }
-
-
+        menuPrincipal();
     }
 
     private static void imprimeVenda(Venda venda, String tipo) {
