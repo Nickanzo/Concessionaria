@@ -10,10 +10,10 @@ Este é o código-fonte de uma aplicação Java para uma concessionária de veí
 
 A aplicação oferece as seguintes funcionalidades:
 
-- Comprar veículo: permite ao cliente escolher e comprar um veículo da concessionária.
+- Comprar veículo: permite escolher e comprar um veículo da concessionária.
 - Ver veículos disponíveis: exibe os carros e motos disponíveis na concessionária.
-- Cadastro de clientes: permite cadastrar um novo cliente na concessionária.
-- Pagamento: permite ao cliente confirmar o pagamento da compra do veículo.
+- Cadastro de clientes: permite cadastrar novo cliente na concessionária.
+- Pagamento: permite confirmar o pagamento da compra do veículo.
 - Gerenciamento de estoque: a concessionária mantém um estoque de carros e motos disponíveis para venda.
 
 ## Requisitos
